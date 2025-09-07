@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚛 LogiTrack - Dashboard Intelligent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="leo.css">
+</head>
+
+<body>
+    <header>
+        <h1><i class="fas fa-truck-fast"></i> LogiTrack Pro</h1>
+        <p class="subtitle">Tableau de bord intelligent pour la gestion des stocks</p>
+    </header>
+    
+    <main>
+        <section class="dashboard scroll-animate">
+            <div class="filter-tabs">
+                <div class="filter-tab active" id="allTab" onclick="filterStocks('all')">
+                    <i class="fas fa-boxes"></i> Tous les produits
+                </div>
+                <div class="filter-tab" id="inStockTab" onclick="filterStocks('green')">
+                    <i class="fas fa-check-circle"></i> En stock
+                </div>
+                <div class="filter-tab" id="lowStockTab" onclick="filterStocks('orange')">
+                    <i class="fas fa-exclamation-triangle"></i> Stock faible
+                </div>
+                <div class="filter-tab" id="outOfStockTab" onclick="filterStocks('red')">
+                    <i class="fas fa-times-circle"></i> Rupture
+                </div>
+            </div>
+            
+            <div id="stockTable" class="stock-grid"></div>
+        </section>
+        
+        <section class="stats-section scroll-animate">
+            <h2><i class="fas fa-chart-line"></i> Statistiques Globales</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-box-open fa-2x"></i>
+                    <h3>Produits suivis</h3>
+                    <div class="stat-value" id="totalProducts">0</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-check-circle fa-2x" style="color: var(--green)"></i>
+                    <h3>En stock</h3>
+                    <div class="stat-value" id="inStockCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-exclamation-triangle fa-2x" style="color: var(--orange)"></i>
+                    <h3>Stock faible</h3>
+                    <div class="stat-value" id="lowStockCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-times-circle fa-2x" style="color: var(--red)"></i>
+                    <h3>En rupture</h3>
+                    <div class="stat-value" id="outOfStockCount">0</div>
+                </div>
+            </div>
+        </section>
+        <!-- Ajoute cette section juste avant la balise </main> -->
+        <section class="video-section scroll-animate" style="margin-top: 50px;">
+            <div class="dashboard">
+                <h2><i class="fas fa-video"></i> Démonstration Vidéo</h2>
+                <p>Découvrez comment utiliser ce tableau de bord en 2 minutes</p>
+                
+                <div class="video-container">
+                    <!-- Remplace le lien par TA vidéo YouTube ou un fichier local -->
+                    <iframe 
+                        width="100%" 
+                        height="400" 
+                        src="https://www.youtube.com/embed/VIDEO_ID_EXEMPLE" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                    
+                    <!-- Alternative pour vidéo locale -->
+                    <!-- <video controls width="100%">
+                        <source src="demo.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas les vidéos HTML5.
+                    </video> -->
+                </div>
+            </div>
+            
+        </section>
+    </main>
+    
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-boxes"></i> LogiTrack</h3>
+                <p>Solution de gestion de stocks pour professionnels de la logistique.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Tableau de bord</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Statistiques</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Vidéo démo</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-gavel"></i> Mentions légales</a></li>
+                    <li><a href="#"><i class="fas fa-shield-alt"></i> Confidentialité</a></li>
+                    <li><a href="#"><i class="fas fa-file-contract"></i> Conditions</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-envelope"></i> contact@logitrack.fr</p>
+                <p><i class="fas fa-phone"></i> +33 6 12 34 56 78</p>
+                <button class="newsletter-btn" onclick="showNewsletterForm()">
+                    <i class="fas fa-paper-plane"></i> S'inscrire à la newsletter
+                </button>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2023 LogiTrack - Projet hackathon CodeSprout - Développé avec <i class="fas fa-heart" style="color: var(--red);"></i> par [Ton Prénom]</p>
+        </div>
+    </footer>
+    <script src="leo.js"></script>
+</body>
+</html>
