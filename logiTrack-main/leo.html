@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LogiTrack — Gestion des stocks et des flux</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="leo.css">
+</head>
+
+<body>
+
+<!-- ============================================================
+     ÉCRAN D'ACCUEIL / CONNEXION
+     ============================================================ -->
+<div class="auth" id="authScreen">
+
+  <div class="auth-split">
+
+    <!-- Colonne présentation -->
+    <section class="auth-presentation">
+      <div class="auth-brand">
+        <span class="auth-brand-mark"><i class="fas fa-truck-ramp-box"></i></span>
+        <span class="auth-brand-txt">
+          <strong>LogiTrack</strong>
+          <small>Stocks &amp; flux logistiques</small>
+        </span>
+      </div>
+
+      <h1 class="auth-title">Pilotez vos stocks et vos flux logistiques en temps réel.</h1>
+
+      <p class="auth-lead">
+        LogiTrack centralise les niveaux de stock de vos dépôts, déclenche les alertes
+        de réapprovisionnement, journalise chaque mouvement et édite vos documents
+        d’inventaire en un clic. Une plateforme unique pour les responsables d’entrepôt,
+        les magasiniers et les équipes supply chain.
+      </p>
+
+      <ul class="auth-features">
+        <li>
+          <span class="auth-feature-ico"><i class="fas fa-triangle-exclamation"></i></span>
+          <div>
+            <strong>Alertes de seuil automatiques</strong>
+            <p>Ruptures, stocks faibles, surstocks et échéances de lots remontés en priorité.</p>
+          </div>
+        </li>
+        <li>
+          <span class="auth-feature-ico"><i class="fas fa-chart-line"></i></span>
+          <div>
+            <strong>Tableaux de bord consolidés</strong>
+            <p>Flux quotidiens, valorisation par catégorie et taux d’occupation par dépôt.</p>
+          </div>
+        </li>
+        <li>
+          <span class="auth-feature-ico"><i class="fas fa-arrow-right-arrow-left"></i></span>
+          <div>
+            <strong>Traçabilité des mouvements</strong>
+            <p>Entrées et sorties horodatées, opérateurs, documents et motifs associés.</p>
+          </div>
+        </li>
+        <li>
+          <span class="auth-feature-ico"><i class="fas fa-print"></i></span>
+          <div>
+            <strong>Éditions et impressions</strong>
+            <p>Inventaire, bon de réapprovisionnement, valorisation, registre des mouvements.</p>
+          </div>
+        </li>
+      </ul>
+
+      <div class="auth-stats">
+        <div><strong>4</strong><span>Dépôts connectés</span></div>
+        <div><strong>30</strong><span>Références suivies</span></div>
+        <div><strong>6</strong><span>Catégories</span></div>
+        <div><strong>24/7</strong><span>Suivi des flux</span></div>
+      </div>
+
+      <footer class="auth-foot">
+        <span>&copy; 2024 LogiTrack — Projet hackathon CodeSprout</span>
+      </footer>
+    </section>
+
+    <!-- Colonne formulaire -->
+    <section class="auth-form-panel">
+      <div class="auth-form-wrap">
+
+        <div class="auth-form-head">
+          <span class="auth-eyebrow">Espace professionnel</span>
+          <h2>Connexion à votre espace</h2>
+          <p>Identifiez-vous pour accéder à votre tableau de bord personnalisé.</p>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+
+          <div class="field">
+            <label for="loginNom">Nom complet</label>
+            <input type="text" id="loginNom" placeholder="Ex. Marie Legrand" required autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label for="loginEmail">Adresse e-mail professionnelle</label>
+            <input type="email" id="loginEmail" placeholder="prenom.nom@entreprise.fr" required autocomplete="email">
+          </div>
+
+          <div class="field">
+            <label for="loginFonction">Fonction</label>
+            <select id="loginFonction">
+              <option>Responsable dépôt</option>
+              <option>Chef d’équipe logistique</option>
+              <option>Magasinier</option>
+              <option>Approvisionneur</option>
+              <option>Contrôleur de gestion</option>
+              <option>Directeur supply chain</option>
+              <option>Autre</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="loginDepot">Dépôt de rattachement</label>
+            <select id="loginDepot">
+              <option value="TOUS">Tous les dépôts (vue consolidée)</option>
+              <option value="D-NOR">Dépôt Nord — Lille</option>
+              <option value="D-SUD">Dépôt Sud — Marseille</option>
+              <option value="D-EST">Dépôt Est — Strasbourg</option>
+              <option value="D-OUEST">Dépôt Ouest — Nantes</option>
+            </select>
+          </div>
+
+          <label class="auth-check">
+            <input type="checkbox" id="loginMemo" checked>
+            <span>Mémoriser ma session sur cet appareil</span>
+          </label>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            <i class="fas fa-right-to-bracket"></i> Se connecter
+          </button>
+        </form>
+
+        <div class="auth-sep"><span>ou</span></div>
+
+        <button type="button" class="btn btn-block" id="btnGuest" onclick="modeConsultation()">
+            <i class="fas fa-user-clock"></i> Continuer en mode consultation
+        </button>
+
+        <p class="auth-note">
+          Le mode consultation donne un accès en lecture à l’ensemble des données
+          sans possibilité de valider des mouvements. Aucune donnée personnelle
+          n’est enregistrée sur un serveur — la session reste locale à ce navigateur.
+        </p>
+
+      </div>
+    </section>
+
+  </div>
+</div>
+
+
+<!-- ============================================================
+     APPLICATION
+     ============================================================ -->
+<div class="app is-hidden" id="appRoot">
+
+  <!-- ================= BARRE LATÉRALE ================= -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark"><i class="fas fa-truck-ramp-box"></i></span>
+      <span class="brand-txt">
+        <strong>LogiTrack</strong>
+        <small>Stocks &amp; flux logistiques</small>
+      </span>
+    </div>
+
+    <nav class="nav" id="mainNav">
+      <button class="nav-item is-active" data-vue="dashboard">
+        <i class="fas fa-gauge-high"></i><span>Tableau de bord</span>
+      </button>
+      <button class="nav-item" data-vue="articles">
+        <i class="fas fa-boxes-stacked"></i><span>Articles</span>
+        <em class="nav-badge" id="badgeArticles">0</em>
+      </button>
+      <button class="nav-item" data-vue="alertes">
+        <i class="fas fa-triangle-exclamation"></i><span>Alertes</span>
+        <em class="nav-badge is-alert" id="badgeAlertes">0</em>
+      </button>
+      <button class="nav-item" data-vue="mouvements">
+        <i class="fas fa-right-left"></i><span>Mouvements</span>
+      </button>
+      <button class="nav-item" data-vue="rapports">
+        <i class="fas fa-file-lines"></i><span>Rapports</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="sync"><span class="pulse"></span> 4 dépôts connectés</div>
+      <div class="sync-time">Synchronisé à <span id="syncTime">--:--</span></div>
+    </div>
+  </aside>
+
+  <!-- ================= ZONE PRINCIPALE ================= -->
+  <div class="workspace">
+
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1 id="pageTitle">Tableau de bord</h1>
+        <p id="pageSub">Vue consolidée des stocks et des flux — 4 dépôts</p>
+      </div>
+
+      <div class="topbar-tools">
+        <label class="search">
+          <i class="fas fa-magnifying-glass"></i>
+          <input type="search" id="globalSearch" placeholder="Rechercher une référence, un article, un fournisseur…">
+        </label>
+        <div class="topbar-date"><i class="far fa-calendar"></i> <span id="todayLabel">—</span></div>
+        <div class="user">
+          <span class="avatar" id="userAvatar">—</span>
+          <span class="user-txt">
+            <strong id="userName">—</strong>
+            <small id="userRole">—</small>
+          </span>
+          <button class="btn-icon" id="btnLogout" title="Se déconnecter" aria-label="Se déconnecter">
+            <i class="fas fa-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ============ VUE : TABLEAU DE BORD ============ -->
+      <section class="vue is-active" id="vue-dashboard">
+
+        <div class="kpis">
+          <article class="kpi">
+            <header><span>Références suivies</span><i class="fas fa-boxes-stacked"></i></header>
+            <strong id="kpiRefs">0</strong>
+            <footer id="kpiRefsFoot">—</footer>
+          </article>
+          <article class="kpi">
+            <header><span>Valeur du stock</span><i class="fas fa-coins"></i></header>
+            <strong id="kpiValeur">0 €</strong>
+            <footer id="kpiValeurFoot">—</footer>
+          </article>
+          <article class="kpi">
+            <header><span>Unités en dépôt</span><i class="fas fa-pallet"></i></header>
+            <strong id="kpiUnites">0</strong>
+            <footer id="kpiUnitesFoot">—</footer>
+          </article>
+          <article class="kpi is-warn">
+            <header><span>Alertes ouvertes</span><i class="fas fa-triangle-exclamation"></i></header>
+            <strong id="kpiAlertes">0</strong>
+            <footer id="kpiAlertesFoot">—</footer>
+          </article>
+          <article class="kpi is-dang">
+            <header><span>Ruptures</span><i class="fas fa-circle-xmark"></i></header>
+            <strong id="kpiRuptures">0</strong>
+            <footer id="kpiRupturesFoot">—</footer>
+          </article>
+        </div>
+
+        <div class="grid-charts">
+          <article class="panel span-2">
+            <header class="panel-head">
+              <h2>Flux quotidiens — 7 derniers jours</h2>
+              <span class="panel-hint">Unités entrées / sorties</span>
+            </header>
+            <div class="chart-box tall"><canvas id="chartFlux"></canvas></div>
+          </article>
+
+          <article class="panel">
+            <header class="panel-head"><h2>Valeur par catégorie</h2></header>
+            <div class="chart-box"><canvas id="chartCategorie"></canvas></div>
+          </article>
+
+          <article class="panel">
+            <header class="panel-head"><h2>Occupation des dépôts</h2></header>
+            <div class="chart-box"><canvas id="chartDepots"></canvas></div>
+          </article>
+        </div>
+
+        <div class="grid-2">
+          <article class="panel">
+            <header class="panel-head">
+              <h2>Alertes prioritaires</h2>
+              <button class="link" data-goto="alertes">Tout voir</button>
+            </header>
+            <ul class="alert-list" id="dashAlertes"></ul>
+          </article>
+
+          <article class="panel">
+            <header class="panel-head">
+              <h2>Derniers mouvements</h2>
+              <button class="link" data-goto="mouvements">Journal complet</button>
+            </header>
+            <div class="table-wrap">
+              <table class="table compact" id="dashMouvements"></table>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============ VUE : ARTICLES ============ -->
+      <section class="vue" id="vue-articles">
+        <div class="toolbar">
+          <label class="search inline">
+            <i class="fas fa-magnifying-glass"></i>
+            <input type="search" id="articleSearch" placeholder="Filtrer les articles…">
+          </label>
+          <select id="filtreCategorie"><option value="">Toutes les catégories</option></select>
+          <select id="filtreDepot"><option value="">Tous les dépôts</option></select>
+          <select id="filtreStatut">
+            <option value="">Tous les statuts</option>
+            <option value="ok">En stock</option>
+            <option value="faible">Stock faible</option>
+            <option value="rupture">Rupture</option>
+            <option value="surstock">Surstock</option>
+          </select>
+          <div class="toolbar-right">
+            <button class="btn" onclick="imprimerInventaire()"><i class="fas fa-print"></i> Inventaire</button>
+            <button class="btn btn-primary" onclick="openArticleForm()"><i class="fas fa-plus"></i> Nouvel article</button>
+          </div>
+        </div>
+
+        <div class="panel no-pad">
+          <div class="table-wrap">
+            <table class="table" id="tableArticles"></table>
+          </div>
+          <div class="table-foot" id="tableFoot">—</div>
+        </div>
+      </section>
+
+      <!-- ============ VUE : ALERTES ============ -->
+      <section class="vue" id="vue-alertes">
+        <div class="toolbar">
+          <div class="chips" id="chipsAlertes">
+            <button class="chip is-active" data-niveau="">Toutes</button>
+            <button class="chip" data-niveau="critique">Critiques</button>
+            <button class="chip" data-niveau="avertissement">Avertissements</button>
+            <button class="chip" data-niveau="info">Informations</button>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn" onclick="imprimerBonReappro()">
+              <i class="fas fa-file-invoice"></i> Bon de réapprovisionnement
+            </button>
+          </div>
+        </div>
+        <div class="alert-grid" id="alertesFull"></div>
+      </section>
+
+      <!-- ============ VUE : MOUVEMENTS ============ -->
+      <section class="vue" id="vue-mouvements">
+        <div class="split">
+
+          <article class="panel">
+            <header class="panel-head"><h2>Enregistrer un mouvement</h2></header>
+            <form class="form" id="formMouvement">
+              <div class="field">
+                <label for="mvType">Type d'opération</label>
+                <select id="mvType" required>
+                  <option value="entree">Entrée — réception fournisseur</option>
+                  <option value="sortie">Sortie — prélèvement / expédition</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="mvArticle">Article</label>
+                <select id="mvArticle" required></select>
+                <small class="hint" id="mvStockHint">—</small>
+              </div>
+
+              <div class="field">
+                <label for="mvQte">Quantité</label>
+                <input type="number" id="mvQte" min="1" step="1" value="1" required>
+              </div>
+
+              <div class="field">
+                <label for="mvMotif">Motif / référence document</label>
+                <input type="text" id="mvMotif" placeholder="Ex. Réception CMD-2318" required>
+              </div>
+
+              <div class="field">
+                <label for="mvOperateur">Opérateur</label>
+                <select id="mvOperateur">
+                  <option>A. Ferrand</option>
+                  <option>M. Diallo</option>
+                  <option>S. Bouvier</option>
+                  <option>K. Ndiaye</option>
+                  <option>J. Petit</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-check"></i> Valider le mouvement
+              </button>
+            </form>
+          </article>
+
+          <article class="panel no-pad">
+            <header class="panel-head pad">
+              <h2>Journal des mouvements</h2>
+              <span class="panel-hint" id="mvtCount">—</span>
+            </header>
+            <div class="table-wrap scroll">
+              <table class="table" id="tableMouvements"></table>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ============ VUE : RAPPORTS ============ -->
+      <section class="vue" id="vue-rapports">
+        <div class="report-grid">
+
+          <article class="report-card">
+            <i class="fas fa-clipboard-list"></i>
+            <h3>Inventaire complet</h3>
+            <p>État des stocks par dépôt et par catégorie, avec valorisation et écarts de seuil.</p>
+            <button class="btn btn-primary" onclick="imprimerInventaire()">
+              <i class="fas fa-print"></i> Générer et imprimer
+            </button>
+          </article>
+
+          <article class="report-card">
+            <i class="fas fa-file-invoice"></i>
+            <h3>Bon de réapprovisionnement</h3>
+            <p>Liste des références en rupture ou sous le seuil, quantités suggérées et fournisseurs.</p>
+            <button class="btn btn-primary" onclick="imprimerBonReappro()">
+              <i class="fas fa-print"></i> Générer et imprimer
+            </button>
+          </article>
+
+          <article class="report-card">
+            <i class="fas fa-chart-pie"></i>
+            <h3>Valorisation du stock</h3>
+            <p>Répartition de la valeur immobilisée par catégorie et par dépôt logistique.</p>
+            <button class="btn btn-primary" onclick="imprimerValorisation()">
+              <i class="fas fa-print"></i> Générer et imprimer
+            </button>
+          </article>
+
+          <article class="report-card">
+            <i class="fas fa-arrow-right-arrow-left"></i>
+            <h3>Registre des mouvements</h3>
+            <p>Traçabilité complète des entrées et sorties, opérateurs et documents associés.</p>
+            <button class="btn btn-primary" onclick="imprimerRegistre()">
+              <i class="fas fa-print"></i> Générer et imprimer
+            </button>
+          </article>
+
+        </div>
+
+        <article class="panel video-panel">
+          <header class="panel-head">
+            <h2>Guide d'utilisation — prise en main en 2 minutes</h2>
+          </header>
+          <div class="video-frame">
+            <iframe
+              src="https://www.youtube.com/embed/VIDEO_ID_EXEMPLE"
+              title="Démonstration LogiTrack"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <p class="video-note">
+            Remplacez l'identifiant <code>VIDEO_ID_EXEMPLE</code> par celui de votre propre démonstration,
+            ou utilisez une balise <code>&lt;video&gt;</code> pour un fichier local.
+          </p>
+        </article>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-cols">
+        <div>
+          <h4>LogiTrack</h4>
+          <p>Plateforme de gestion des stocks et des flux pour entrepôts et plateformes logistiques.</p>
+        </div>
+        <div>
+          <h4>Modules</h4>
+          <ul>
+            <li><a href="#" data-goto="dashboard">Tableau de bord</a></li>
+            <li><a href="#" data-goto="articles">Catalogue articles</a></li>
+            <li><a href="#" data-goto="alertes">Alertes &amp; seuils</a></li>
+            <li><a href="#" data-goto="mouvements">Mouvements</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Éditions</h4>
+          <ul>
+            <li><a href="#" onclick="imprimerInventaire();return false;">Inventaire</a></li>
+            <li><a href="#" onclick="imprimerBonReappro();return false;">Bon de réappro</a></li>
+            <li><a href="#" onclick="imprimerValorisation();return false;">Valorisation</a></li>
+            <li><a href="#" onclick="imprimerRegistre();return false;">Registre mouvements</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <p><i class="fas fa-envelope"></i> contact@logitrack.fr</p>
+          <p><i class="fas fa-phone"></i> +33 6 12 34 56 78</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2024 LogiTrack — Projet hackathon CodeSprout</span>
+        <span id="footerUser">Session : —</span>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<!-- Conteneurs techniques -->
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+<div id="printArea"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="leo.js?v=2"></script>
+</body>
+</html>
